@@ -1,5 +1,5 @@
 from __init__ import *
-import experiments.imp_reward as ir
+import experiments_single.imp_reward as ir
 
 def plot_implicit_reward(policy, beta, title="Implicit Reward"):
     y_vals = torch.linspace(-2, 14, 1000)
