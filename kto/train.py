@@ -1,7 +1,7 @@
 from utils import *
 import policy.gaussian as gaus
 import dataset.dataset as data
-import experiments.imp_reward as ir
+import experiments_single.imp_reward as ir
 
 
 def train_kto(beta, delta = 1.5, good_ratio = None):

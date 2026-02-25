@@ -1,5 +1,5 @@
 from policy.gaussian import *
-from experiments.imp_reward import implicit_reward
+from experiments_single.imp_reward import implicit_reward
 from utils import *
 from dataset.dataset import *
 
