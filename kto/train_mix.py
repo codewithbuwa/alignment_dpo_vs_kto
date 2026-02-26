@@ -1,10 +1,8 @@
-from policy.gaussian_mixture import GaussianMixturePolicy
+from __init__ import *
 import experiments_single.imp_reward as ir
-from utils import *
+import dataset.dataset as data
 
-REF_POLICY = GaussianMixturePolicy().REF_POLICY
-
-def train_kto_mixture(ref_policy: GaussianMixturePolicy = REF_POLICY, beta, delta=1.5, good_ratio=None,
+def train_kto_mixture(ref_policy: GaussianMixturePolicy = REF_POLICY, beta = BETA, delta=1.5, good_ratio=None,
                       estimation_mode="analytical", n_components=2, alpha = 0.1):
     policy = GaussianMixturePolicy(n_components=n_components).to(DEVICE)
     optimizer = optim.Adam(policy.parameters(), lr=LR)

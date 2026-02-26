@@ -22,12 +22,6 @@ class GaussianMixturePolicy(nn.Module):
             logits_init = torch.zeros(n_components)
         self.logits = nn.Parameter(logits_init.clone().detach().float())
 
-        self.REF_POLICY = GaussianMixturePolicy(
-            mu_init = torch.linspace(REF_MU - 2, REF_MU + 2, N_COMPONENTS),
-            log_sigma_init = math.log(REF_SIGMA) * torch.ones(N_COMPONENTS), 
-            logits_init = torch.zeros(N_COMPONENTS)
-        )
-
     def sigmas(self):
         return torch.exp(self.log_sigmas)
 
@@ -59,7 +53,7 @@ class GaussianMixturePolicy(nn.Module):
         """
         Monte Carlo estimate of KL(π || π_ref)
         """
-        ref_policy = self.REF_POLICY
+        ref_policy = REF_POLICY
         with torch.no_grad():
             # Sample from current policy
             y = self.sample(n_samples)
@@ -71,3 +65,8 @@ class GaussianMixturePolicy(nn.Module):
             kl = torch.mean(log_p - log_ref).detach()
             
             return kl
+REF_POLICY = GaussianMixturePolicy(
+    mu_init = torch.linspace(4, 7, N_COMPONENTS),
+    log_sigma_init = math.log(REF_SIGMA) * torch.ones(N_COMPONENTS), 
+    logits_init = torch.zeros(N_COMPONENTS)
+).to(DEVICE)

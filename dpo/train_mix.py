@@ -1,8 +1,10 @@
-from policy.gaussian_mixture import GaussianMixturePolicy
+from dataset.dataset import *
+from policy.gaussian_mixture import *
+from policy.gaussian import *
 from utils import *
+import experiments_single.imp_reward as ir
 
-y_w, y_l = data.build_dpo_dataset()
-REF_POLICY = GaussianMixturePolicy().REF_POLICY
+y_w, y_l = build_dpo_dataset()
 
 def train_dpo_mixture(ref_policy: GaussianMixturePolicy = REF_POLICY, 
                       beta = BETA, n_components=2, steps=STEPS, lr=LR):
@@ -12,13 +14,8 @@ def train_dpo_mixture(ref_policy: GaussianMixturePolicy = REF_POLICY,
 
     for _ in range(steps):
         optimizer.zero_grad()
-        log_pi_w = policy.log_prob(y_w)
-        log_pi_l = policy.log_prob(y_l)
-        log_ref_w = ref_policy.log_prob(y_w)
-        log_ref_l = ref_policy.log_prob(y_l)
-
-        h_w = beta * (log_pi_w - log_ref_w)
-        h_l = beta * (log_pi_l - log_ref_l)
+        h_w = ir.implicit_reward(policy, ref_policy, y_w, beta)
+        h_l = ir.implicit_reward(policy, ref_policy, y_l, beta)
 
         loss = -torch.mean(torch.log(torch.sigmoid(h_w - h_l)))
         loss.backward()

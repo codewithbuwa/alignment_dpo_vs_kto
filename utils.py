@@ -4,7 +4,6 @@ import numpy as np
 import torch.optim as optim
 import math
 import matplotlib.pyplot as plt
-import dataset.dataset as data
 
 torch.manual_seed(42)
 

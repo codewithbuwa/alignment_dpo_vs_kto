@@ -1,7 +1,6 @@
-from utils import *
-import policy.gaussian as gaus
-import dataset.dataset as data
+from __init__ import *
 import experiments_single.imp_reward as ir
+import dataset.dataset as data
 
 def train_kto(beta, delta=1.5, good_ratio=None, estimation_mode="analytical", alpha=0.5):
     policy = gaus.GaussianPolicy().to(DEVICE)

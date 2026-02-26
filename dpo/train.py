@@ -1,11 +1,10 @@
-from policy.gaussian import *
-from experiments_single.imp_reward import implicit_reward
-from utils import *
 from dataset.dataset import *
+from policy.gaussian import *
+from utils import *
+import experiments_single.imp_reward as ir
 
-
-yw, yl = build_dpo_dataset()
 ref_policy = GaussianPolicy(REF_MU, math.log(REF_SIGMA)).to(DEVICE)
+yw, yl = build_dpo_dataset()
 
 def train_dpo(beta, w = yw, l = yl):
     policy = GaussianPolicy().to(DEVICE)
@@ -14,8 +13,8 @@ def train_dpo(beta, w = yw, l = yl):
 
     for _ in range(STEPS):
         optimizer.zero_grad()
-        hw = implicit_reward(policy, ref_policy, yw, beta)
-        hl = implicit_reward(policy, ref_policy, yl, beta)
+        hw = ir.implicit_reward(policy, ref_policy, yw, beta)
+        hl = ir.implicit_reward(policy, ref_policy, yl, beta)
 
         bt = torch.sigmoid(hw - hl)
         loss = -torch.mean(torch.log(bt))

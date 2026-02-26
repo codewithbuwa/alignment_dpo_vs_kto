@@ -1,5 +1,4 @@
 from utils import *
-
 def build_dpo_dataset(good_ratio = None):
     y1 = torch.normal(REF_MU, REF_SIGMA, size=(DATASET_SIZE,))
     y2 = torch.normal(REF_MU, REF_SIGMA, size=(DATASET_SIZE,))
