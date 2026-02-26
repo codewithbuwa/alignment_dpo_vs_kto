@@ -5,6 +5,7 @@ from dataset.dataset import *
 
 
 yw, yl = build_dpo_dataset()
+ref_policy = GaussianPolicy(REF_MU, math.log(REF_SIGMA)).to(DEVICE)
 
 def train_dpo(beta, w = yw, l = yl):
     policy = GaussianPolicy().to(DEVICE)
@@ -13,8 +14,8 @@ def train_dpo(beta, w = yw, l = yl):
 
     for _ in range(STEPS):
         optimizer.zero_grad()
-        hw = implicit_reward(policy, yw, beta)
-        hl = implicit_reward(policy, yl, beta)
+        hw = implicit_reward(policy, ref_policy, yw, beta)
+        hl = implicit_reward(policy, ref_policy, yl, beta)
 
         bt = torch.sigmoid(hw - hl)
         loss = -torch.mean(torch.log(bt))

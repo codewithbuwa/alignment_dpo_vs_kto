@@ -12,7 +12,10 @@ class GaussianPolicy(nn.Module):
     def log_prob(self, y):
         sigma = self.sigma()
         return -0.5 * (((y - self.mu) / sigma) ** 2 + 2 * self.log_sigma + math.log(2 * math.pi))
-
+ 
+    def sample(self, n):
+        return self.mu + self.sigma() * torch.randn(n)
+    
     def kl_to_ref(self):
         sigma = self.sigma()
         return torch.log(REF_SIGMA / sigma) + \

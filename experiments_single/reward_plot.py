@@ -1,9 +1,10 @@
 from __init__ import *
 import experiments_single.imp_reward as ir
 
+REF_POLICY = GaussianPolicy(REF_MU, math.log(REF_SIGMA)).to(DEVICE)
 def plot_implicit_reward(policy, beta, title="Implicit Reward"):
     y_vals = torch.linspace(-2, 14, 1000)
-    r_vals = ir.implicit_reward(policy, y_vals, beta).detach()
+    r_vals = ir.implicit_reward(policy, REF_POLICY, y_vals, beta).detach()
 
     plt.figure()
     plt.plot(y_vals, r_vals)

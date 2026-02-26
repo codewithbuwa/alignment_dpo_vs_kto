@@ -4,6 +4,7 @@ import numpy as np
 import torch.optim as optim
 import math
 import matplotlib.pyplot as plt
+import dataset.dataset as data
 
 torch.manual_seed(42)
 
@@ -22,6 +23,7 @@ REF_MU = 5.0
 REF_SIGMA = 2.0
 TARGET = 7.0
 ZONE = (5.5, 8.5)
+N_COMPONENTS = 2
 
 
 
